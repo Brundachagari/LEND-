@@ -8,6 +8,7 @@ import { CategoryChips } from '@/components/CategoryChips';
 import { useListings } from '@/context/ListingsContext';
 import { ClothingGrid } from '@/components/ClothingGrid';
 import { GradientHeader } from '@/components/GradientHeader';
+import { Spacing } from '@/constants/design';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -46,15 +47,15 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.lg,
   },
   content: {
-    paddingBottom: 32,
+    paddingBottom: Spacing['2xl'],
   },
   sectionHeader: {
-    marginTop: 20,
-    marginBottom: 8,
+    marginTop: Spacing.xl,
+    marginBottom: Spacing.sm,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',

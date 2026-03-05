@@ -40,7 +40,7 @@ export function ListingCard({ listing, onPress }: ListingCardProps) {
         </ThemedText>
         <ThemedText style={styles.price}>${listing.price}</ThemedText>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

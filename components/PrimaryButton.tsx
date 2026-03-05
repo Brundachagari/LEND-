@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Colors } from '@/constants/theme';
+import { Radius, Spacing, Shadow } from '@/constants/design';
 
 type PrimaryButtonProps = {
   label: string;
@@ -41,11 +42,12 @@ export function PrimaryButton({ label, onPress, disabled, loading }: PrimaryButt
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 16,
-    borderRadius: 999,
-    paddingVertical: 12,
+    marginTop: Spacing.md,
+    borderRadius: Radius.pill,
+    paddingVertical: Spacing.sm + 4,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Shadow.card,
   },
   label: {
     color: '#ffffff',

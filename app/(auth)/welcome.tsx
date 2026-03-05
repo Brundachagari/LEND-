@@ -22,8 +22,8 @@ export default function WelcomeScreen() {
         </ThemedText>
 
         <View style={styles.buttons}>
-          <PrimaryButton label="Sign up with .edu email" onPress={() => router.push('/auth/email')} />
-          <PrimaryButton label="Log in" onPress={() => router.push('/auth/email')} />
+          <PrimaryButton label="Sign up with .edu email" onPress={() => router.push('/email')} />
+          <PrimaryButton label="Log in" onPress={() => router.push('/email')} />
         </View>
       </View>
     </LinearGradient>

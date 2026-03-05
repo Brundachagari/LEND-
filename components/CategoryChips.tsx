@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
+import { Radius, Spacing } from '@/constants/design';
 
 type CategoryChipsProps = {
   categories: string[];
@@ -42,16 +43,16 @@ export function CategoryChips({ categories, selected, onChange }: CategoryChipsP
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 8,
+    marginBottom: Spacing.sm,
   },
   container: {
-    gap: 8,
-    paddingVertical: 4,
+    gap: Spacing.xs,
+    paddingVertical: Spacing.xs,
   },
   chip: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 999,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    borderRadius: Radius.pill,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.08)',
     backgroundColor: 'rgba(0,0,0,0.02)',

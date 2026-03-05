@@ -7,6 +7,7 @@ import { PrimaryButton } from '@/components/PrimaryButton';
 import { ProfileAvatar } from '@/components/ProfileAvatar';
 import { useListings } from '@/context/ListingsContext';
 import { ClothingGrid } from '@/components/ClothingGrid';
+import { Spacing } from '@/constants/design';
 import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
@@ -65,12 +66,12 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.lg,
   },
   content: {
-    paddingBottom: 32,
-    gap: 20,
+    paddingBottom: Spacing['2xl'],
+    gap: Spacing.lg,
   },
   headerRow: {
     flexDirection: 'row',

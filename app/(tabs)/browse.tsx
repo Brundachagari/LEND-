@@ -8,6 +8,7 @@ import { CategoryChips } from '@/components/CategoryChips';
 import { useListings } from '@/context/ListingsContext';
 import { ClothingGrid } from '@/components/ClothingGrid';
 import { GradientHeader } from '@/components/GradientHeader';
+import { Spacing } from '@/constants/design';
 
 export default function BrowseScreen() {
   const router = useRouter();
@@ -41,11 +42,11 @@ export default function BrowseScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.lg,
   },
   header: {
-    marginBottom: 12,
+    marginBottom: Spacing.md,
   },
 });
 

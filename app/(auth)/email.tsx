@@ -15,7 +15,7 @@ export default function EmailAuthScreen() {
       Alert.alert('Use your .edu email', 'Lend is limited to verified college email addresses.');
       return;
     }
-    router.push('/auth/profile-setup');
+    router.push('/profile-setup');
   };
 
   return (

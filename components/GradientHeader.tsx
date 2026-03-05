@@ -3,6 +3,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { ThemedText } from '@/components/themed-text';
+import { Radius, Spacing, Shadow } from '@/constants/design';
 
 type GradientHeaderProps = {
   title: string;
@@ -31,9 +32,10 @@ export function GradientHeader({ title, subtitle, children, style }: GradientHea
 
 const styles = StyleSheet.create({
   gradient: {
-    borderRadius: 24,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+    borderRadius: Radius.xl,
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.lg,
+    ...Shadow.card,
   },
   content: {
     flexDirection: 'row',
