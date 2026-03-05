@@ -10,10 +10,27 @@ import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } fr
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ListingsProvider } from '@/context/ListingsContext';
 import { MessagingProvider } from '@/context/MessagingContext';
+import { supabase } from '../lib/supabase';
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
+
+async function testSupabaseConnection() {
+  try {
+    const { data, error } = await supabase.from('test').select('*');
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error('[Supabase] Test query error', error);
+    } else {
+      // eslint-disable-next-line no-console
+      console.log('[Supabase] Test query result', data);
+    }
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error('[Supabase] Test query exception', err);
+  }
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -34,6 +51,10 @@ export default function RootLayout() {
       }
     };
     loadStatus();
+  }, []);
+
+  useEffect(() => {
+    testSupabaseConnection();
   }, []);
 
   if (isOnboarded === null || !fontsLoaded) {
