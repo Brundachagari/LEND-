@@ -1,12 +1,13 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { CategoryChips } from '@/components/CategoryChips';
 import { useListings } from '@/context/ListingsContext';
-import { ListingCard } from '@/components/ListingCard';
-import { useRouter } from 'expo-router';
+import { ClothingGrid } from '@/components/ClothingGrid';
+import { GradientHeader } from '@/components/GradientHeader';
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -15,12 +16,10 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.hero}>
-          <ThemedText type="title">Lend</ThemedText>
-          <ThemedText style={styles.heroSubtitle}>
-            A campus marketplace for sharing style. Buy and sell looks with other students.
-          </ThemedText>
-        </View>
+        <GradientHeader
+          title="Lend"
+          subtitle="A campus marketplace for sharing style. Buy and sell looks with other students."
+        />
 
         <CategoryChips
           categories={categories}
@@ -29,19 +28,16 @@ export default function HomeScreen() {
         />
 
         <View style={styles.sectionHeader}>
-          <ThemedText type="subtitle">Featured</ThemedText>
-          <ThemedText style={styles.sectionHint}>Tap an item to see details</ThemedText>
+          <ThemedText type="subtitle">Trending on your campus</ThemedText>
+          <ThemedText style={styles.sectionHint}>Tap a piece to see more details</ThemedText>
         </View>
 
-        <View style={styles.grid}>
-          {featuredListings.map((item) => (
-            <ListingCard
-              key={item.id}
-              listing={item}
-              onPress={() => router.push({ pathname: '/listing/[id]', params: { id: item.id } })}
-            />
-          ))}
-        </View>
+        <ClothingGrid
+          data={featuredListings}
+          onPressItem={(item) =>
+            router.push({ pathname: '/listing/[id]', params: { id: item.id } })
+          }
+        />
       </ScrollView>
     </ThemedView>
   );
@@ -56,17 +52,8 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: 32,
   },
-  hero: {
-    gap: 8,
-    marginBottom: 16,
-  },
-  heroSubtitle: {
-    fontSize: 16,
-    lineHeight: 22,
-    opacity: 0.85,
-  },
   sectionHeader: {
-    marginTop: 16,
+    marginTop: 20,
     marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -75,11 +62,6 @@ const styles = StyleSheet.create({
   sectionHint: {
     fontSize: 12,
     opacity: 0.6,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
   },
 });
 

@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { CategoryChips } from '@/components/CategoryChips';
 import { useListings } from '@/context/ListingsContext';
+import { GradientHeader } from '@/components/GradientHeader';
 
 export default function SellScreen() {
   const { addListing, categories, selectedCategory, setSelectedCategory } = useListings();
@@ -49,12 +58,10 @@ export default function SellScreen() {
       behavior={Platform.select({ ios: 'padding', android: undefined })}>
       <ThemedView style={styles.container}>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-          <ThemedText type="title" style={styles.title}>
-            Sell an item
-          </ThemedText>
-          <ThemedText style={styles.subtitle}>
-            Create a quick listing that other students can discover.
-          </ThemedText>
+          <GradientHeader
+            title="Sell an item"
+            subtitle="Create a quick listing that other students can discover."
+          />
 
           <CategoryChips
             categories={categories}
@@ -143,13 +150,6 @@ const styles = StyleSheet.create({
   content: {
     paddingBottom: 32,
     gap: 16,
-  },
-  title: {
-    marginBottom: 4,
-  },
-  subtitle: {
-    opacity: 0.8,
-    marginBottom: 12,
   },
   field: {
     gap: 6,
