@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { ThemedText } from '@/components/themed-text';
@@ -13,7 +13,12 @@ type ListingCardProps = {
 
 export function ListingCard({ listing, onPress }: ListingCardProps) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.card,
+        pressed && { transform: [{ scale: 0.97 }], opacity: 0.96 },
+      ]}>
       {listing.imageUrl ? (
         <Image source={{ uri: listing.imageUrl }} style={styles.image} contentFit="cover" />
       ) : (
@@ -26,9 +31,9 @@ export function ListingCard({ listing, onPress }: ListingCardProps) {
           <ThemedText numberOfLines={1} style={styles.title}>
             {listing.title}
           </ThemedText>
-          <TouchableOpacity hitSlop={8}>
+          <Pressable hitSlop={8}>
             <MaterialIcons name="favorite-border" size={18} color="rgba(0,0,0,0.6)" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <ThemedText style={styles.meta}>
           {listing.size} • {listing.condition} • Stanford
@@ -44,7 +49,12 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 14,
     overflow: 'hidden',
-    backgroundColor: 'rgba(0,0,0,0.02)',
+    backgroundColor: 'rgba(255,255,255,0.96)',
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
   },
   image: {
     width: '100%',

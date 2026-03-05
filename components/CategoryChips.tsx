@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 
@@ -19,16 +19,20 @@ export function CategoryChips({ categories, selected, onChange }: CategoryChipsP
         {categories.map((category) => {
           const isActive = selected === category || (!selected && category === 'All');
           return (
-            <TouchableOpacity
+            <Pressable
               key={category}
               onPress={() => onChange(isActive ? null : category)}
-              style={[styles.chip, isActive && styles.chipActive]}>
+              style={({ pressed }) => [
+                styles.chip,
+                isActive && styles.chipActive,
+                pressed && { transform: [{ scale: 0.96 }] },
+              ]}>
               <ThemedText
                 style={[styles.label, isActive && styles.labelActive]}
                 type="defaultSemiBold">
                 {category}
               </ThemedText>
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </ScrollView>

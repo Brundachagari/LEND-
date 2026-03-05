@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ThemedText } from '@/components/themed-text';
 import { PrimaryButton } from '@/components/PrimaryButton';
@@ -12,9 +13,10 @@ export default function ProfileSetupScreen() {
   const [school, setSchool] = useState('');
   const [bio, setBio] = useState('');
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     // In a real app, save profile then move into the main app.
-    router.push('/(tabs)');
+    await AsyncStorage.setItem('lend_onboarded', 'true');
+    router.replace('/(tabs)');
   };
 
   return (

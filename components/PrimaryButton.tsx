@@ -24,7 +24,7 @@ export function PrimaryButton({ label, onPress, disabled, loading }: PrimaryButt
       disabled={isDisabled}
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: tint },
+        { backgroundColor: tint, transform: [{ scale: pressed && !isDisabled ? 0.97 : 1 }] },
         (pressed || loading) && styles.pressed,
         isDisabled && styles.disabled,
       ]}>
@@ -51,10 +51,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   pressed: {
-    opacity: 0.9,
+    opacity: 0.96,
   },
   disabled: {
     opacity: 0.5,
   },
 });
+
 
