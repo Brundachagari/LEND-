@@ -5,9 +5,11 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts, Poppins_400Regular, Poppins_600SemiBold, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ListingsProvider } from '@/context/ListingsContext';
+import { MessagingProvider } from '@/context/MessagingContext';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -16,6 +18,11 @@ export const unstable_settings = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [isOnboarded, setIsOnboarded] = useState<boolean | null>(null);
+  const [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+  });
 
   useEffect(() => {
     const loadStatus = async () => {
@@ -29,7 +36,7 @@ export default function RootLayout() {
     loadStatus();
   }, []);
 
-  if (isOnboarded === null) {
+  if (isOnboarded === null || !fontsLoaded) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator />
@@ -39,14 +46,19 @@ export default function RootLayout() {
 
   return (
     <ListingsProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack initialRouteName={isOnboarded ? '(tabs)' : '(auth)'}>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-        </Stack>
-        <StatusBar style="auto" />
-      </ThemeProvider>
+      <MessagingProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack initialRouteName={isOnboarded ? '(tabs)' : '(auth)'}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="listing/[id]" options={{ title: 'Listing' }} />
+            <Stack.Screen name="messages" options={{ headerShown: false }} />
+            <Stack.Screen name="messages/[id]" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </MessagingProvider>
     </ListingsProvider>
   );
 }

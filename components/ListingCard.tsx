@@ -4,7 +4,9 @@ import { Image } from 'expo-image';
 
 import { ThemedText } from '@/components/themed-text';
 import type { Listing } from '@/context/ListingsContext';
+import { useListings } from '@/context/ListingsContext';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Radius, Spacing, Shadow } from '@/constants/design';
 
 type ListingCardProps = {
   listing: Listing;
@@ -12,6 +14,9 @@ type ListingCardProps = {
 };
 
 export function ListingCard({ listing, onPress }: ListingCardProps) {
+  const { likedIds, toggleLike } = useListings();
+  const isLiked = likedIds.includes(listing.id);
+  const coverImage = listing.photos?.[0] ?? listing.imageUrl;
   return (
     <Pressable
       onPress={onPress}
@@ -19,26 +24,37 @@ export function ListingCard({ listing, onPress }: ListingCardProps) {
         styles.card,
         pressed && { transform: [{ scale: 0.97 }], opacity: 0.96 },
       ]}>
-      {listing.imageUrl ? (
-        <Image source={{ uri: listing.imageUrl }} style={styles.image} contentFit="cover" />
-      ) : (
-        <View style={[styles.image, styles.imagePlaceholder]}>
-          <ThemedText style={styles.placeholderText}>No image</ThemedText>
-        </View>
-      )}
+      <View style={styles.imageWrapper}>
+        {coverImage ? (
+          <Image source={{ uri: coverImage }} style={styles.image} contentFit="cover" />
+        ) : (
+          <View style={[styles.image, styles.imagePlaceholder]}>
+            <ThemedText type="secondary">No image</ThemedText>
+          </View>
+        )}
+        <Pressable
+          onPress={() => toggleLike(listing.id)}
+          hitSlop={8}
+          style={styles.heartBadge}>
+          <MaterialIcons
+            name={isLiked ? 'favorite' : 'favorite-border'}
+            size={18}
+            color="#FFFFFF"
+          />
+        </Pressable>
+      </View>
       <View style={styles.info}>
         <View style={styles.infoHeader}>
-          <ThemedText numberOfLines={1} style={styles.title}>
+          <ThemedText numberOfLines={1} style={styles.title} type="defaultSemiBold">
             {listing.title}
           </ThemedText>
-          <Pressable hitSlop={8}>
-            <MaterialIcons name="favorite-border" size={18} color="rgba(0,0,0,0.6)" />
-          </Pressable>
         </View>
-        <ThemedText style={styles.meta}>
+        <ThemedText type="secondary" style={styles.meta}>
           {listing.size} • {listing.condition} • Stanford
         </ThemedText>
-        <ThemedText style={styles.price}>${listing.price}</ThemedText>
+        <ThemedText type="price" style={styles.price}>
+          ${listing.price}
+        </ThemedText>
       </View>
     </Pressable>
   );
@@ -47,31 +63,40 @@ export function ListingCard({ listing, onPress }: ListingCardProps) {
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    borderRadius: 14,
+    borderRadius: Radius.lg,
+    backgroundColor: '#FFFFFF',
     overflow: 'hidden',
-    backgroundColor: 'rgba(255,255,255,0.96)',
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
+    ...Shadow.card,
+  },
+  imageWrapper: {
+    borderTopLeftRadius: Radius.lg,
+    borderTopRightRadius: Radius.lg,
+    overflow: 'hidden',
+    position: 'relative',
   },
   image: {
     width: '100%',
-    height: 150,
+    height: 180,
   },
   imagePlaceholder: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  placeholderText: {
-    fontSize: 12,
-    opacity: 0.6,
+  heartBadge: {
+    position: 'absolute',
+    top: Spacing.sm,
+    right: Spacing.sm,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   info: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    gap: 2,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.sm,
+    gap: 4,
   },
   infoHeader: {
     flexDirection: 'row',
@@ -80,16 +105,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   title: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
   },
   meta: {
-    fontSize: 12,
-    opacity: 0.7,
+    fontSize: 13,
   },
   price: {
-    marginTop: 2,
-    fontWeight: '600',
+    marginTop: Spacing.xs,
   },
 });
 

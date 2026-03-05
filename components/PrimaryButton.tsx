@@ -1,9 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { ThemedText } from '@/components/themed-text';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Colors } from '@/constants/theme';
 import { Radius, Spacing, Shadow } from '@/constants/design';
 
 type PrimaryButtonProps = {
@@ -14,9 +13,6 @@ type PrimaryButtonProps = {
 };
 
 export function PrimaryButton({ label, onPress, disabled, loading }: PrimaryButtonProps) {
-  const colorScheme = useColorScheme();
-  const tint = Colors[colorScheme ?? 'light'].tint;
-
   const isDisabled = disabled || loading;
 
   return (
@@ -25,17 +21,25 @@ export function PrimaryButton({ label, onPress, disabled, loading }: PrimaryButt
       disabled={isDisabled}
       style={({ pressed }) => [
         styles.button,
-        { backgroundColor: tint, transform: [{ scale: pressed && !isDisabled ? 0.97 : 1 }] },
+        {
+          transform: [{ scale: pressed && !isDisabled ? 0.97 : 1 }],
+        },
         (pressed || loading) && styles.pressed,
         isDisabled && styles.disabled,
       ]}>
-      {loading ? (
-        <ActivityIndicator color="#ffffff" />
-      ) : (
-        <ThemedText type="defaultSemiBold" style={styles.label}>
-          {label}
-        </ThemedText>
-      )}
+      <LinearGradient
+        colors={['#FFC8DD', '#FFAFCC']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.gradient}>
+        {loading ? (
+          <ActivityIndicator color="#ffffff" />
+        ) : (
+          <ThemedText type="defaultSemiBold" style={styles.label}>
+            {label}
+          </ThemedText>
+        )}
+      </LinearGradient>
     </Pressable>
   );
 }
@@ -44,10 +48,14 @@ const styles = StyleSheet.create({
   button: {
     marginTop: Spacing.md,
     borderRadius: Radius.pill,
-    paddingVertical: Spacing.sm + 4,
+    ...Shadow.card,
+  },
+  gradient: {
+    borderRadius: Radius.pill,
+    height: 50,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    ...Shadow.card,
   },
   label: {
     color: '#ffffff',

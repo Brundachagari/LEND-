@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Pressable, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { ThemedText } from '@/components/themed-text';
 import { Radius, Spacing } from '@/constants/design';
@@ -24,15 +25,26 @@ export function CategoryChips({ categories, selected, onChange }: CategoryChipsP
               key={category}
               onPress={() => onChange(isActive ? null : category)}
               style={({ pressed }) => [
-                styles.chip,
-                isActive && styles.chipActive,
+                styles.chipOuter,
                 pressed && { transform: [{ scale: 0.96 }] },
               ]}>
-              <ThemedText
-                style={[styles.label, isActive && styles.labelActive]}
-                type="defaultSemiBold">
-                {category}
-              </ThemedText>
+              {isActive ? (
+                <LinearGradient
+                  colors={['#FFC8DD', '#FFAFCC']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.chip}>
+                  <ThemedText style={[styles.label, styles.labelActive]} type="defaultSemiBold">
+                    {category}
+                  </ThemedText>
+                </LinearGradient>
+              ) : (
+                <View style={[styles.chip, styles.chipInactive]}>
+                  <ThemedText style={styles.label} type="defaultSemiBold">
+                    {category}
+                  </ThemedText>
+                </View>
+              )}
             </Pressable>
           );
         })}
@@ -49,17 +61,18 @@ const styles = StyleSheet.create({
     gap: Spacing.xs,
     paddingVertical: Spacing.xs,
   },
+  chipOuter: {
+    borderRadius: Radius.pill,
+  },
   chip: {
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
     borderRadius: Radius.pill,
+  },
+  chipInactive: {
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0.08)',
-    backgroundColor: 'rgba(0,0,0,0.02)',
-  },
-  chipActive: {
-    backgroundColor: '#11181C',
-    borderColor: '#11181C',
+    backgroundColor: '#FFFFFF',
   },
   label: {
     fontSize: 14,

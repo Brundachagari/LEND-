@@ -7,15 +7,16 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-import { ThemedView } from '@/components/themed-view';
-import { ThemedText } from '@/components/themed-text';
 import { PrimaryButton } from '@/components/PrimaryButton';
 import { CategoryChips } from '@/components/CategoryChips';
 import { useListings } from '@/context/ListingsContext';
 import { GradientHeader } from '@/components/GradientHeader';
 import { InputField } from '@/components/InputField';
+import { GradientBackground } from '@/components/GradientBackground';
 import { Spacing } from '@/constants/design';
+import { PhotoPickerCard } from '@/components/PhotoPickerCard';
 
 export default function SellScreen() {
   const { addListing, categories, selectedCategory, setSelectedCategory } = useListings();
@@ -25,7 +26,23 @@ export default function SellScreen() {
   const [size, setSize] = useState('');
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
+
+  const pickPhoto = async () => {
+    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!perm.granted) {
+      Alert.alert('Permission needed', 'Please allow photo access to upload pictures.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.9,
+    });
+    if (!result.canceled) {
+      setPhotoUri(result.assets[0]?.uri);
+    }
+  };
 
   const handleSubmit = () => {
     if (!title.trim() || !price.trim()) {
@@ -39,8 +56,10 @@ export default function SellScreen() {
       size: size.trim() || 'One size',
       condition: condition.trim() || 'Gently used',
       description: description.trim() || 'No description provided.',
-      imageUrl: imageUrl.trim() || undefined,
+      imageUrl: undefined,
+      photos: photoUri ? [photoUri] : [],
       category: selectedCategory ?? 'All',
+      sellerId: 'seller_1',
     });
 
     setTitle('');
@@ -48,7 +67,7 @@ export default function SellScreen() {
     setSize('');
     setCondition('');
     setDescription('');
-    setImageUrl('');
+    setPhotoUri(undefined);
 
     Alert.alert('Listing created', 'Your item has been added locally to the feed.');
   };
@@ -57,10 +76,10 @@ export default function SellScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.select({ ios: 'padding', android: undefined })}>
-      <ThemedView style={styles.container}>
+      <GradientBackground>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           <GradientHeader
-            title="Sell an item"
+            title="List an item for rent"
             subtitle="Create a quick listing that other students can discover."
           />
 
@@ -69,6 +88,8 @@ export default function SellScreen() {
             selected={selectedCategory}
             onChange={setSelectedCategory}
           />
+
+          <PhotoPickerCard uri={photoUri} onPress={pickPhoto} />
 
           <InputField
             label="Title"
@@ -107,27 +128,14 @@ export default function SellScreen() {
             multiline
           />
 
-          <InputField
-            label="Image URL (optional)"
-            value={imageUrl}
-            onChangeText={setImageUrl}
-            placeholder="https://..."
-            autoCapitalize="none"
-          />
-
           <PrimaryButton label="Post listing" onPress={handleSubmit} />
         </ScrollView>
-      </ThemedView>
+      </GradientBackground>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.lg,
-  },
   content: {
     paddingBottom: Spacing['2xl'],
     gap: Spacing.lg,

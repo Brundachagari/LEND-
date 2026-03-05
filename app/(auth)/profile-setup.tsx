@@ -31,7 +31,7 @@ export default function ProfileSetupScreen() {
         <View style={styles.card}>
           <ThemedText type="title">Create your profile</ThemedText>
           <ThemedText style={styles.subtitle}>
-            Share a little about yourself so other students know who they are swapping with.
+            Share a little about yourself so other students know who they are renting with.
           </ThemedText>
 
           <View style={styles.field}>

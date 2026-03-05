@@ -13,6 +13,27 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].icon,
+        tabBarStyle: {
+          position: 'absolute',
+          left: 16,
+          right: 16,
+          bottom: 12,
+          borderRadius: 24,
+          height: 64,
+          paddingBottom: 8,
+          paddingTop: 8,
+          backgroundColor: 'rgba(255,255,255,0.94)',
+          shadowColor: '#000',
+          shadowOpacity: 0.06,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 4 },
+          borderTopWidth: 0,
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Poppins_400Regular',
+          fontSize: 11,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
@@ -33,7 +54,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="sell"
         options={{
-          title: 'Sell',
+          title: 'List',
           tabBarIcon: ({ color }) => <IconSymbol size={24} name="plus.circle" color={color} />,
         }}
       />
